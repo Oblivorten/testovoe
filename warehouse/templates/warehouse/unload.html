@@ -1,0 +1,57 @@
+{% load static %}
+<!doctype html>
+<html lang=ru>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Разгрузка</title>
+</head>
+<body>
+    <h1>Разгрузка</h1>
+    <form method="post">
+        {% csrf_token %}
+     <table border="1">
+            <tr>
+                <th>Бортовой номер</th>
+                <th>Модель</th>
+                <th>Грузоподъемность</th>
+                <th>Текущий вес</th>
+                <th>Перегруз %</th>
+                <th>Координаты (X Y)</th>
+            </tr>
+            {% for truck in trucks %}
+            <tr>
+                <td>{{ truck.number }}</td>
+                <td>{{ truck.model }}</td>
+                <td>{{ truck.lifting_capacity }}</td>
+                <td>{{ truck.weight }}</td>
+                <td>{{ truck.overload }}</td>
+                <td><input type="text" name="truck_{{ truck.id }}_coords" placeholder="30 20"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Разгрузить</button>
+    </form>
+
+    <h2>Склад</h2>
+    <table border="1">
+        <tr>
+            <th>Название</th>
+            <th>Объем до разгрузки, т</th>
+            <th>Объем после разгрузки, т</th>
+            <th>Качественные характеристики</th>
+        </tr>
+        <tr>
+            <td>{{ warehouse.name }}</td>
+            <td>{{ warehouse.weight_before_unload|default:"0" }}</td>
+            <td>{{ warehouse.weight_after_unload|default:"0" }}</td>
+            <td>{{ warehouse.sio2_percent|floatformat:2 }}% SiO2, {{ warehouse.fe_percent|floatformat:2 }}% Fe</td>
+        </tr>
+    </table>
+
+    <a href="{% url 'clear_warehouse' %}">Очистить склад</a>
+</body>
+</html>
