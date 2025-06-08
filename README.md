@@ -30,7 +30,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 4. Настройка базы данных
 python manage.py migrate
-6. Запуск сервера
+5. Запуск сервера
 python manage.py runserver
 ```
 
